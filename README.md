@@ -17,9 +17,21 @@
 
 ## 使用
 
+### 方式一：一键远程安装（新机器最快）
+
 ```bash
-git clone <this-repo> zsh-setup   # 或直接把这个目录拷到目标机器
-cd zsh-setup
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/Mark4551124015/zsh_setup/main/install.sh)"
+```
+
+> 和 oh-my-zsh 官方安装脚本同款写法：先把脚本整体下载成字符串再执行，比 `curl | bash`
+> 更不容易因网络中断而执行到一半的脚本。**建议第一次用之前自己点开
+> [install.sh](./install.sh) 看一眼再跑**，毕竟是从网上下来直接执行的脚本。
+
+### 方式二：clone 后本地跑
+
+```bash
+git clone git@github.com:Mark4551124015/zsh_setup.git
+cd zsh_setup
 ./install.sh
 ```
 

@@ -6,7 +6,17 @@
 #
 set -euo pipefail
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_RAW="https://raw.githubusercontent.com/Mark4551124015/zsh_setup/main"
+
+# 本地 `git clone && ./install.sh` 时用同目录的 functions.zsh；
+# 远程 `curl | bash` 运行时没有本地文件，会在下面自动从 GitHub 下载。
+LOCAL_FUNCTIONS=""
+if [[ -n "${BASH_SOURCE[0]:-}" ]]; then
+  _src_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")" 2>/dev/null && pwd || true)"
+  if [[ -n "$_src_dir" && -f "$_src_dir/functions.zsh" ]]; then
+    LOCAL_FUNCTIONS="$_src_dir/functions.zsh"
+  fi
+fi
 
 info()  { printf '\033[1;34m[INFO]\033[0m %s\n' "$1"; }
 ok()    { printf '\033[1;32m[ OK ]\033[0m %s\n' "$1"; }
@@ -89,7 +99,12 @@ else
 fi
 
 # ---------- 6. 写入自定义函数 (vpn / quiteVPN / unvpn) ----------
-cp -f "$SCRIPT_DIR/functions.zsh" "$ZSH_CUSTOM/functions.zsh"
+if [[ -n "$LOCAL_FUNCTIONS" ]]; then
+  cp -f "$LOCAL_FUNCTIONS" "$ZSH_CUSTOM/functions.zsh"
+else
+  info "远程运行模式：从 GitHub 下载 functions.zsh ..."
+  curl -fsSL "$REPO_RAW/functions.zsh" -o "$ZSH_CUSTOM/functions.zsh"
+fi
 ok "自定义命令已写入 $ZSH_CUSTOM/functions.zsh (oh-my-zsh 会自动加载)"
 
 # ---------- 7. 配置 ~/.zshrc ----------
