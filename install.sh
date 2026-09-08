@@ -4,6 +4,12 @@
 # 支持 Linux (apt/dnf/yum/pacman) 和 macOS (brew)
 # 可重复执行（幂等）：已安装的部分会自动跳过
 #
+if [ -z "${BASH_VERSION:-}" ]; then
+  echo "请用 bash 运行本脚本（不是 sh），例如：" >&2
+  echo '  bash -c "$(curl -fsSL https://raw.githubusercontent.com/Mark4551124015/zsh_setup/main/install.sh)"' >&2
+  exit 1
+fi
+
 set -euo pipefail
 
 REPO_RAW="https://raw.githubusercontent.com/Mark4551124015/zsh_setup/main"

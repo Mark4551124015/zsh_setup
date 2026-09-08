@@ -20,12 +20,15 @@
 ### 方式一：一键远程安装（新机器最快）
 
 ```bash
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/Mark4551124015/zsh_setup/main/install.sh)"
+bash -c "$(curl -fsSL https://raw.githubusercontent.com/Mark4551124015/zsh_setup/main/install.sh)"
 ```
 
-> 和 oh-my-zsh 官方安装脚本同款写法：先把脚本整体下载成字符串再执行，比 `curl | bash`
-> 更不容易因网络中断而执行到一半的脚本。**建议第一次用之前自己点开
-> [install.sh](./install.sh) 看一眼再跑**，毕竟是从网上下来直接执行的脚本。
+> 注意是 `bash -c`，不是 `sh -c`：脚本用了 bash 数组等语法，`sh` 在很多发行版上是
+> dash，不兼容（会报 `set: Illegal option -o pipefail` 之类的错）。
+>
+> 先把脚本整体下载成字符串再执行，比 `curl | bash` 更不容易因网络中断而执行到一半的
+> 脚本。**建议第一次用之前自己点开 [install.sh](./install.sh) 看一眼再跑**，毕竟是从
+> 网上下来直接执行的脚本。
 
 ### 方式二：clone 后本地跑
 
