@@ -128,9 +128,23 @@ set_zshrc_var() {
   fi
 }
 
+# 有些环境（如 clash-for-linux 之类脚本装过的 .zshrc）本身并不是
+# oh-my-zsh 模板生成的，可能压根没有 `export ZSH=` 这一行，先补上，
+# 否则下面 `source $ZSH/oh-my-zsh.sh` 会因为 $ZSH 是空的而失败。
+if ! grep -qE '^export ZSH=' "$ZSHRC"; then
+  sed -i.bak "1i export ZSH=\"\$HOME/.oh-my-zsh\"" "$ZSHRC" && rm -f "$ZSHRC.bak"
+fi
+
 set_zshrc_var "ZSH_THEME" 'ZSH_THEME="powerlevel10k/powerlevel10k"'
 set_zshrc_var "plugins"   'plugins=(git zsh-autosuggestions zsh-syntax-highlighting)'
-ok "已设置 ZSH_THEME 和 plugins"
+
+# 真正加载 oh-my-zsh 的这一行必须排在 ZSH_THEME / plugins 后面。
+# KEEP_ZSHRC=yes 意味着如果用户本来就有 .zshrc，oh-my-zsh 安装器不会
+# 帮你写这一行，所以这里显式补上（幂等，已存在则跳过）。
+if ! grep -qF 'source $ZSH/oh-my-zsh.sh' "$ZSHRC"; then
+  printf '\nsource $ZSH/oh-my-zsh.sh\n' >> "$ZSHRC"
+fi
+ok "已设置 ZSH_THEME / plugins，并确认 oh-my-zsh.sh 会被加载"
 
 # ---------- 8. 设为默认 shell ----------
 ZSH_BIN="$(command -v zsh)"
