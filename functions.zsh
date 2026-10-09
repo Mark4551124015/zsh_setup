@@ -1,18 +1,19 @@
 # ~/.oh-my-zsh/custom/functions.zsh
-# 代理开关函数。由 oh-my-zsh 自动 source（无需在 .zshrc 里手动 source）。
+# Proxy helpers, automatically sourced by oh-my-zsh.
+# No manual source command is needed in .zshrc.
 #
-# 用法：
-#   vpn        开启代理（socks5h + http，用于科学上网）
-#   quiteVPN   静默开启代理（同 vpn，但不打印提示，适合脚本里调用）
-#   unvpn      关闭代理
+# Usage:
+#   vpn        Enable SOCKS5h and HTTP proxy environment variables.
+#   quiteVPN   Enable HTTP proxy environment variables silently for scripts.
+#   unvpn      Disable proxy environment variables.
 
 vpn() {
   unset HTTP_PROXY HTTPS_PROXY http_proxy https_proxy ALL_PROXY all_proxy
 
-  export ALL_PROXY="socks5h://127.0.0.1:7899"
-  export all_proxy="socks5h://127.0.0.1:7899"
-  export http_proxy="http://127.0.0.1:7899"
-  export https_proxy="http://127.0.0.1:7899"
+  export ALL_PROXY="socks5h://127.0.0.1:7897"
+  export all_proxy="socks5h://127.0.0.1:7897"
+  export http_proxy="http://127.0.0.1:7897"
+  export https_proxy="http://127.0.0.1:7897"
   export NO_PROXY="localhost,127.0.0.1,::1"
   export no_proxy="localhost,127.0.0.1,::1"
 
@@ -22,10 +23,10 @@ vpn() {
 quiteVPN() {
   unset HTTP_PROXY HTTPS_PROXY http_proxy https_proxy ALL_PROXY all_proxy
 
-  export ALL_PROXY="http://127.0.0.1:7899"
-  export all_proxy="http://127.0.0.1:7899"
-  export http_proxy="http://127.0.0.1:7899"
-  export https_proxy="http://127.0.0.1:7899"
+  export ALL_PROXY="http://127.0.0.1:7897"
+  export all_proxy="http://127.0.0.1:7897"
+  export http_proxy="http://127.0.0.1:7897"
+  export https_proxy="http://127.0.0.1:7897"
   export NO_PROXY="localhost,127.0.0.1,::1"
   export no_proxy="localhost,127.0.0.1,::1"
 }

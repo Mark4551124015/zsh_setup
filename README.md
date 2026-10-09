@@ -1,62 +1,67 @@
 # zsh-setup
 
-新 Linux / macOS 主机一键搭建 zsh 环境：zsh + oh-my-zsh + powerlevel10k + 插件 + 自定义命令。
-脚本幂等，重复执行安全（已装的部分自动跳过）。
+English | [简体中文](README_zh.md)
 
-## 包含内容
+Set up a zsh environment on Linux or macOS with one script: zsh, oh-my-zsh,
+powerlevel10k, plugins, and custom commands. The script can be run repeatedly;
+components that are already installed are skipped.
 
-- **zsh**：通过系统包管理器安装（apt / dnf / yum / pacman / brew）
-- **oh-my-zsh**：无人值守安装（不会自动进入 zsh、不覆盖已有 `.zshrc` 主体）
-- **主题 [powerlevel10k](https://github.com/romkatv/powerlevel10k)**
-- **插件**：`git`（oh-my-zsh 内置）、`zsh-autosuggestions`、`zsh-syntax-highlighting`
-- **自定义命令**（`functions.zsh`，放入 `$ZSH_CUSTOM` 由 oh-my-zsh 自动加载）：
-  - `vpn` — 开启代理（socks5h + http，127.0.0.1:7899）
-  - `quiteVPN` — 静默开启代理（不打印提示）
-  - `unvpn` — 关闭代理
-- 自动将默认 shell 切换为 zsh (`chsh`)
+## What's included
 
-## 使用
+- **zsh**: installed using your system package manager (apt / dnf / yum / pacman / brew).
+- **oh-my-zsh**: unattended installation without launching zsh or replacing your existing `.zshrc`.
+- **[powerlevel10k](https://github.com/romkatv/powerlevel10k)** theme.
+- **Plugins**: `git` (bundled with oh-my-zsh), `zsh-autosuggestions`, and `zsh-syntax-highlighting`.
+- **Custom commands** in `functions.zsh`, automatically loaded from `$ZSH_CUSTOM` by oh-my-zsh:
+  - `vpn`: enable the local proxy (SOCKS5h for `ALL_PROXY`, HTTP for HTTP/HTTPS) at `127.0.0.1:7897`.
+  - `quiteVPN`: enable the local HTTP proxy silently, suitable for scripts.
+  - `unvpn`: disable the proxy.
+- Set zsh as the default shell using `chsh`.
 
-### 方式一：一键远程安装（新机器最快）
+## Usage
+
+### Option 1: Remote installation
 
 ```bash
 bash -c "$(curl -fsSL https://raw.githubusercontent.com/Mark4551124015/zsh_setup/main/install.sh)"
 ```
 
-> 注意是 `bash -c`，不是 `sh -c`：脚本用了 bash 数组等语法，`sh` 在很多发行版上是
-> dash，不兼容（会报 `set: Illegal option -o pipefail` 之类的错）。
->
-> 先把脚本整体下载成字符串再执行，比 `curl | bash` 更不容易因网络中断而执行到一半的
-> 脚本。**建议第一次用之前自己点开 [install.sh](./install.sh) 看一眼再跑**，毕竟是从
-> 网上下来直接执行的脚本。
+Use `bash -c`, not `sh -c`: this script uses Bash features such as arrays.
+On many Linux distributions, `sh` is dash and cannot run this script.
 
-### 方式二：clone 后本地跑
+This command downloads the script before executing it. Review
+[install.sh](./install.sh) before running it for the first time.
+
+### Option 2: Clone and run locally
 
 ```bash
-git clone git@github.com:Mark4551124015/zsh_setup.git
+git clone https://github.com/Mark4551124015/zsh_setup.git
 cd zsh_setup
 ./install.sh
 ```
 
-安装完成后：
+After installation:
 
 ```bash
-exec zsh          # 或重新打开终端
-p10k configure     # 首次会自动弹出，也可随时手动重新配置
+exec zsh           # Or open a new terminal
+p10k configure     # Runs automatically on first launch; rerun it whenever needed
 ```
 
-> 建议安装一款 **Nerd Font**（如 MesloLGS NF）并在终端设置里选用，否则 p10k 的图标会显示为方块/问号。
-> 参考：https://github.com/romkatv/powerlevel10k#meslo-nerd-font-patched-for-powerlevel10k
+Install a **Nerd Font**, such as MesloLGS NF, and select it in your terminal settings
+so the theme's icons display correctly. See the
+[powerlevel10k font guide](https://github.com/romkatv/powerlevel10k#meslo-nerd-font-patched-for-powerlevel10k).
 
-## 自定义命令的代理地址
+## Proxy address
 
-`functions.zsh` 里写死了 `127.0.0.1:7899`（Clash 系代理默认端口）。如果你的代理端口不同，
-安装后直接编辑：
+The project's default proxy address is `127.0.0.1:7897`. These commands configure
+proxy environment variables; a local proxy service must be running separately.
+If your proxy uses a different port, edit the installed file:
 
 ```bash
 $EDITOR "${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/functions.zsh"
 ```
 
-## 以后再加新命令
+## Adding custom commands
 
-不用改 `.zshrc`，直接在 `$ZSH_CUSTOM/` 下新建/编辑任意 `*.zsh` 文件，oh-my-zsh 启动时会自动加载。
+Create or edit any `*.zsh` file under `$ZSH_CUSTOM/`. oh-my-zsh loads these files
+at startup, so no additional `source` command is needed in `.zshrc`.
