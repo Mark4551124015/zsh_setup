@@ -12,8 +12,10 @@ vpn() {
 
   export ALL_PROXY="socks5h://127.0.0.1:7897"
   export all_proxy="socks5h://127.0.0.1:7897"
-  export http_proxy="http://127.0.0.1:7897"
-  export https_proxy="http://127.0.0.1:7897"
+  export HTTP_PROXY="http://127.0.0.1:7897"
+  export HTTPS_PROXY="http://127.0.0.1:7897"
+  export http_proxy="$HTTP_PROXY"
+  export https_proxy="$HTTPS_PROXY"
   export NO_PROXY="localhost,127.0.0.1,::1"
   export no_proxy="localhost,127.0.0.1,::1"
 
@@ -25,8 +27,10 @@ quiteVPN() {
 
   export ALL_PROXY="http://127.0.0.1:7897"
   export all_proxy="http://127.0.0.1:7897"
-  export http_proxy="http://127.0.0.1:7897"
-  export https_proxy="http://127.0.0.1:7897"
+  export HTTP_PROXY="http://127.0.0.1:7897"
+  export HTTPS_PROXY="http://127.0.0.1:7897"
+  export http_proxy="$HTTP_PROXY"
+  export https_proxy="$HTTPS_PROXY"
   export NO_PROXY="localhost,127.0.0.1,::1"
   export no_proxy="localhost,127.0.0.1,::1"
 }
